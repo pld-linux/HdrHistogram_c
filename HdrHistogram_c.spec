@@ -5,15 +5,16 @@
 Summary:	C port of High Dynamic Range (HDR) histogram
 Summary(pl.UTF-8):	Port C biblioteki histogramów HDR (High Dynamic Range)
 Name:		HdrHistogram_c
-Version:	0.9.13
+Version:	0.11.8
 Release:	1
 License:	Public Domain/CC0 v1.0 or BSD
 Group:		Libraries
 #Source0Download: https://github.com/HdrHistogram/HdrHistogram_c/releases
 Source0:	https://github.com/HdrHistogram/HdrHistogram_c/archive/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	2233212a5c0b9f39445d8498eb8b8f7e
+# Source0-md5:	01ad863daaecea56a93f25de3065dcac
 URL:		https://github.com/HdrHistogram/HdrHistogram_c
-BuildRequires:	cmake >= 2.8
+BuildRequires:	cmake >= 3.12
+BuildRequires:	libstdc++-devel >= 6:4.7
 BuildRequires:	zlib-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -28,6 +29,7 @@ Summary:	Header files for HdrHistogram library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki HdrHistogram
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
+Requires:	zlib-devel
 
 %description devel
 Header files for HdrHistogram library.
@@ -63,8 +65,8 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} -C build install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-%{__rm} $RPM_BUILD_ROOT%{_bindir}/hdr_histogram*_test
-%{__rm} $RPM_BUILD_ROOT%{_bindir}/perftest
+%{__rm} $RPM_BUILD_ROOT%{_bindir}/hdr_*_test
+%{__rm} $RPM_BUILD_ROOT%{_bindir}/hdr_histogram_perf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -78,13 +80,15 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/hdr_decoder
 %attr(755,root,root) %{_bindir}/hiccup
 %attr(755,root,root) %{_libdir}/libhdr_histogram.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libhdr_histogram.so.5
+%attr(755,root,root) %ghost %{_libdir}/libhdr_histogram.so.6
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libhdr_histogram.so
 %dir %{_includedir}/hdr
 %{_includedir}/hdr/hdr_*.h
+%{_libdir}/cmake/hdr_histogram
+%{_pkgconfigdir}/hdr_histogram.pc
 
 %if %{with static_libs}
 %files static

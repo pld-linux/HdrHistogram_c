@@ -5,13 +5,14 @@
 Summary:	C port of High Dynamic Range (HDR) histogram
 Summary(pl.UTF-8):	Port C biblioteki histogramów HDR (High Dynamic Range)
 Name:		HdrHistogram_c
-Version:	0.11.9
+Version:	0.11.10
 Release:	1
 License:	Public Domain/CC0 v1.0 or BSD
 Group:		Libraries
 #Source0Download: https://github.com/HdrHistogram/HdrHistogram_c/releases
 Source0:	https://github.com/HdrHistogram/HdrHistogram_c/archive/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	38dbfeb8be486839abb3c159b7e349c5
+# Source0-md5:	cbead3109b56d662b50b1cf2c50bb7b7
+Patch0:		%{name}-avx2.patch
 URL:		https://github.com/HdrHistogram/HdrHistogram_c
 BuildRequires:	cmake >= 3.12
 BuildRequires:	libstdc++-devel >= 6:4.7
@@ -51,6 +52,7 @@ Statyczna biblioteka HdrHistogram.
 
 %prep
 %setup -q
+%patch -P0 -p1
 
 %build
 install -d build
@@ -79,7 +81,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE.txt README.md
 %attr(755,root,root) %{_bindir}/hdr_decoder
 %attr(755,root,root) %{_bindir}/hiccup
-%attr(755,root,root) %{_libdir}/libhdr_histogram.so.*.*.*
+%{_libdir}/libhdr_histogram.so.*.*.*
 %ghost %{_libdir}/libhdr_histogram.so.6
 
 %files devel
